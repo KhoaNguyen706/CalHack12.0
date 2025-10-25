@@ -8,10 +8,10 @@ client = Groq(api_key=os.getenv('GROQ_API_KEY'))
 async def Summarize(text,ingredients):
     summarize_prompt = f"""
     Your role is Input Anlysis. 
-    Given a text input and ingredients list like ["...","organe"], summarize it into JSON format.
+    Given a text input and ingredients list like ["...","orange"], summarize it into JSON format.
     ONLY RETURN VALID JSON, nothing else.
     
-    Example input: "I want to make sweet thailand food around 1 hour"
+    Example input: "I want to make sweet thailand food that takes 1 hour"
     Example output:
     {{
         "ingredients":["tomato","egg","banana"]
@@ -39,7 +39,7 @@ async def Summarize(text,ingredients):
 async def Cook(msg):
     cooking_prompt =f"""
     you are 3 star Michelein cheft or restaurant chef or 20+ experienced chef.
-    your task is give input ingredients, time, cuisine, favour
+    your task is to give input ingredients, time, cuisine, favour
     with current ingredients, you are chef, that you must cook the best food
     if cuisine is None, you will invent the dishes like your job
     always make food by priority favour. 
@@ -75,7 +75,7 @@ async def CookAgain(msg):
     cooking_again_prompt =f"""
     you are 3 star Michelein cheft or restaurant chef or 20+ experienced chef.
     this case because you are fail to pass by Food Advisor
-    you given original_request , feed back, attempt
+    you give original_request , feed back, attempt
     You have 2 options to improve your reciept: 
     1. Change the dishes
     2. Change the ingredients you used to fit with feed back

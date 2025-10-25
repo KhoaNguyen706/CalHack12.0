@@ -1,63 +1,49 @@
 import React, { useState } from 'react';
 import './App.css';
+import VoiceInput from './components/VoiceInput';
+import RecipeDisplay from './components/RecipeDisplay';
 
 function App() {
   const [recipe, setRecipe] = useState(null);
-  const [isListening, setIsListening] = useState(false);
 
-  const startListening = () => {
-    setIsListening(true);
-    // TODO: Implement voice recognition integration
-  };
-
-  const stopListening = () => {
-    setIsListening(false);
-    // TODO: Stop voice recognition
+  const handleVoiceInput = (input) => {
+    // TODO: Connect with backend
+    console.log('Voice input received:', input);
+    
+    // Temporary mock recipe for testing
+    setRecipe({
+      title: "Test Recipe",
+      summary: "This is a test recipe to demonstrate the UI.",
+      ingredients: [
+        "2 cups flour",
+        "1 cup sugar",
+        "3 eggs",
+        "1 cup milk"
+      ],
+      steps: [
+        "Mix dry ingredients in a bowl",
+        "Beat eggs and milk together",
+        "Combine wet and dry ingredients",
+        "Bake at 350°F for 30 minutes"
+      ]
+    });
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Cooking Assistant</h1>
+        <h1>🍳 Cooking Assistant</h1>
+        <p className="subtitle">Your voice-enabled cooking companion</p>
       </header>
       
       <main className="App-main">
-        <div className="voice-control">
-          <button 
-            className={`mic-button ${isListening ? 'listening' : ''}`}
-            onClick={isListening ? stopListening : startListening}
-          >
-            {isListening ? 'Stop Listening' : 'Start Listening'}
-          </button>
-        </div>
-
-        {recipe && (
-          <div className="recipe-display">
-            <h2>{recipe.title}</h2>
-            <div className="recipe-summary">
-              <p>{recipe.summary}</p>
-            </div>
-            
-            <div className="recipe-ingredients">
-              <h3>Ingredients</h3>
-              <ul>
-                {recipe.ingredients.map((ingredient, index) => (
-                  <li key={index}>{ingredient}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="recipe-steps">
-              <h3>Instructions</h3>
-              <ol>
-                {recipe.steps.map((step, index) => (
-                  <li key={index}>{step}</li>
-                ))}
-              </ol>
-            </div>
-          </div>
-        )}
+        <VoiceInput onVoiceInput={handleVoiceInput} />
+        <RecipeDisplay recipe={recipe} />
       </main>
+
+      <footer className="App-footer">
+        <p>Say "help" for available commands</p>
+      </footer>
     </div>
   );
 }
