@@ -7,11 +7,12 @@ def list_microphones():
     for index, name in enumerate(sr.Microphone.list_microphone_names()):
         print(f"Microphone {index}: {name}")
 
-def test_microphone():
-    """Test if we can access the default microphone"""
+def test_microphone(device_index=None):
+    """Test if we can access the microphone"""
     try:
         r = sr.Recognizer()
-        with sr.Microphone() as source:
+        # Use specific microphone index or default
+        with sr.Microphone(device_index=device_index) as source:
             print("\nMicrophone test successful!")
             print("Adjusting for ambient noise... Speak after the beep.")
             r.adjust_for_ambient_noise(source, duration=1)
@@ -19,11 +20,11 @@ def test_microphone():
             audio = r.listen(source, timeout=5)
             print("Audio captured successfully!")
             try:
-            # Use Google's Web Speech API to recognize the audio
+                # Use Google's Web Speech API to recognize the audio
                 text = r.recognize_google(audio)
                 print(f"You said: {text}")
                 result = {"text": text}
-                json.load(result)
+                print(json.dumps(result))
             except sr.UnknownValueError:
                 print("Could not understand audio")
             except sr.RequestError as e:
@@ -36,5 +37,11 @@ def test_microphone():
 if __name__ == "__main__":
     print("Testing speech recognition setup...")
     list_microphones()
-    test_microphone()
+    
+    # Try microphone index 3 (Microphone (Realtek Audio))
+    # or 4 (Microphone (Realtek HD Audio Mic input))
+    print("\nTrying microphone index 3...")
+    if not test_microphone(device_index=3):
+        print("\nTrying microphone index 4...")
+        test_microphone(device_index=4)
     
