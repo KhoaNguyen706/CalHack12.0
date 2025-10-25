@@ -11,7 +11,7 @@ async def Summarize(text,ingredients):
     Given a text input and ingredients list like ["...","orange"], summarize it into JSON format.
     ONLY RETURN VALID JSON, nothing else.
     
-    Example input: "I want to make sweet thailand food that takes 1 hour"
+    Example input: "I want to make sweet thailand food that takes an 1 hour"
     Example output:
     {{
         "ingredients":["tomato","egg","banana"]
@@ -40,7 +40,7 @@ async def Cook(msg):
     cooking_prompt =f"""
     you are 3 star Michelein cheft or restaurant chef or 20+ experienced chef.
     your task is to give input ingredients, time, cuisine, favour
-    with current ingredients, you are chef, that you must cook the best food
+    with current ingredients, you are chef, that mean you must cook the best food
     if cuisine is None, you will invent the dishes like your job
     always make food by priority favour. 
     After cooking, you ONLY RETURN VALID JSON FORMAT nothing else
