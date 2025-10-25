@@ -1,0 +1,5 @@
+ultralytics>=8.0.0
+torch>=2.0.0  # CPU-only by default; for GPU support use command from pytorch.org
+numpy>=1.22.0
+opencv-python>=4.6.0  # for image processing
+pillow>=7.1.2  # for image operations
