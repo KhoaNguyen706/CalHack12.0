@@ -1,4 +1,5 @@
 import speech_recognition as sr
+import json
 
 def list_microphones():
     """List all available microphones"""
@@ -16,12 +17,13 @@ def test_microphone():
             r.adjust_for_ambient_noise(source, duration=1)
             print("*beep*")
             audio = r.listen(source, timeout=5)
-            print(audio)
             print("Audio captured successfully!")
             try:
             # Use Google's Web Speech API to recognize the audio
                 text = r.recognize_google(audio)
                 print(f"You said: {text}")
+                result = {"text": text}
+                json.load(result)
             except sr.UnknownValueError:
                 print("Could not understand audio")
             except sr.RequestError as e:
