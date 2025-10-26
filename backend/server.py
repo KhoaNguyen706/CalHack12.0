@@ -33,6 +33,40 @@ class DetectResponse(BaseModel):
     confidence: float  
     raw_items: List[dict]  
 
+@app.get("/api/recipe/result/{request_id}")
+async def get_recipe_status(request_id: str):
+    """
+    Get the current status of a recipe generation request
+    Returns: processing, retrying, completed, or not_found
+    """
+    try:
+        file_path = f"recipe_results/{request_id}.json"
+        
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                recipe_data = json.load(f)
+            
+            
+            if "status" in recipe_data:
+                return recipe_data  
+            else:
+                
+                return {
+                    "status": "completed",
+                    "data": recipe_data
+                }
+        else:
+            return {
+                "status": "not_found",
+                "message": "Recipe not yet available"
+            }
+            
+    except Exception as e:
+        print(f"Error getting recipe status: {e}")
+        return {
+            "status": "error",
+            "message": str(e)
+        }
 
 @app.post("/detect", response_model=DetectResponse)
 async def detect(image: UploadFile = File(...)):
@@ -139,7 +173,7 @@ async def generate_recipe(
                 
                 if os.path.exists(file_path):
                     
-                    print(f"📁 Found result file: {file_path}")
+                    print(f" Found result file: {file_path}")
                     with open(file_path, 'r') as f:
                         result = json.load(f)
                     
@@ -153,7 +187,7 @@ async def generate_recipe(
                 
               
                 if status == "completed" and result.get("data"):
-                    print(f"\n✅ Recipe completed successfully!\n")
+                    print(f"\n Recipe completed successfully!\n")
                     
                     data = result.get("data", {})
                     
@@ -177,21 +211,21 @@ async def generate_recipe(
                 
                     try:
                         os.remove(file_path)
-                        print(f"🗑️ Deleted result file: {file_path}")
+                        print(f" Deleted result file: {file_path}")
                     except Exception as e:
-                        print(f"⚠️ Warning: Could not delete file {file_path}: {e}")
+                        print(f" Warning: Could not delete file {file_path}: {e}")
                     
                     return response
                 
                 
                 elif status == "completed" and not result.get("data"):
                     error = result.get("error", "Recipe generation failed")
-                    print(f"\n❌ Recipe failed: {error}\n")
+                    print(f"\n Recipe failed: {error}\n")
                     raise HTTPException(422, error)
                 
                 
                 elif status == "not_found":
-                    print(f"\n❌ Session not found!\n")
+                    print(f"\n Session not found!\n")
                     raise HTTPException(404, "Session not found in advisor agent")
             
             

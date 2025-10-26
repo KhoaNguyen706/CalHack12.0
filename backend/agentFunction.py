@@ -43,6 +43,7 @@ async def Cook(msg):
     with current ingredients, you are chef, that mean you must cook the best food
     if cuisine is None, you will invent the dishes like your job
     always make food by priority favour. 
+    
     After cooking, you ONLY RETURN VALID JSON FORMAT nothing else
     Example:
     {{

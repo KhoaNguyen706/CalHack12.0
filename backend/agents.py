@@ -63,7 +63,7 @@ action_agent = Agent(
     name="action_agent",
     seed="action agent seed",
     port=8001,
-    endpoint=["http://127.0.0.1:8001/submit"],  # Re-enabled for REST access
+    endpoint=["http://127.0.0.1:8001/submit"],  
 )
 
 class RecipeStartResponse(Model):
@@ -83,7 +83,7 @@ async def rest_start_recipe(ctx: Context, req: InputForAction) -> RecipeStartRes
     ctx.logger.info(f" REST POST received: {req.text}")
     ctx.logger.info(f" Ingredients: {req.ingredients}")
     
-    # Store initial status
+    
     if req.session:
         recipe_results[req.session] = {
             "status": "processing",
@@ -141,8 +141,19 @@ async def handle_action(ctx: Context, sender: str, msg: InputForAction):
             favour=parsed.get("favour", ""),
             time=parsed.get("time", ""),
             cuisine=parsed.get("cuisine", ""),
-            ingredients=msg.ingredients
+            ingredients=msg.ingredients,
+            session=msg.session
         )
+        if msg.session:
+            with open(f"{RESULTS_DIR}/{msg.session}.json", "w") as f:
+                json.dump({
+                    "status": "processing",
+                    "stage": "summarizing",
+                    "step": "summarize",
+                    "message": "Summarizing user request...",
+                    "data": parsed
+                }, f, indent=2)
+        await asyncio.sleep(3)
         cooker_address ="agent1qwke9pml8wcysqqj4js4405wt29xqcrmw0xqw8gw7z84n8mwafdykdlyvjq"
         await ctx.send(cooker_address, summarized)
     except Exception as e:
@@ -202,8 +213,18 @@ async def handle_cook(ctx:Context,sender:str,msg:SummarizeByAction):
                 "time": msg.time,
                 "cuisine": msg.cuisine
             },
-                session=msg.session  # Pass session through
+                session=msg.session  
             )
+            if msg.session:
+                with open(f"{RESULTS_DIR}/{msg.session}.json", "w") as f:
+                    json.dump({
+                        "status": "processing",
+                        "stage": "cooking",
+                        "step": "cook",
+                        "message": "Cooking recipe...",
+                        "data": parsed
+                    }, f, indent=2)
+            await asyncio.sleep(3)
             advisor_address = "agent1qv0zgfy639er7tdvpv6yep3my3hse4wvh7cge7g4rdrg4uj3h0qdqw9zt7e"
             await ctx.send(advisor_address, output)
         except Exception as e:
@@ -263,7 +284,7 @@ async def get_recipe_result(ctx: Context, session_id: str) -> RecipeResultRespon
     ctx.logger.info(f" REST GET for session: {session_id}")
     ctx.logger.info(f" Available sessions in memory: {list(recipe_results.keys())}")
     
-    # Try to get from memory first
+    
     if session_id in recipe_results:
         result = recipe_results[session_id]
         ctx.logger.info(f" Found result in memory for session: {session_id}")
@@ -274,12 +295,12 @@ async def get_recipe_result(ctx: Context, session_id: str) -> RecipeResultRespon
             stage=result.get("stage")
         )
     
-    # Try to read from file as backup
+    
     file_path = os.path.join(RESULTS_DIR, f"{session_id}.json")
     ctx.logger.info(f" Checking file: {file_path}")
     ctx.logger.info(f" File exists: {os.path.exists(file_path)}")
     
-    # List all files in directory
+    
     if os.path.exists(RESULTS_DIR):
         files = os.listdir(RESULTS_DIR)
         ctx.logger.info(f" Files in {RESULTS_DIR}: {files}")
@@ -295,7 +316,7 @@ async def get_recipe_result(ctx: Context, session_id: str) -> RecipeResultRespon
             stage=result.get("stage")
         )
     
-    # Not found anywhere
+    
     ctx.logger.info(f"Session not found: {session_id}")
     return RecipeResultResponse(
         status="not_found",
@@ -310,87 +331,75 @@ async def evaluate_recipe(ctx:Context,sender: str, msg: OutputByCooker):
     ctx.logger.info(f" Breakdown: {rating['breakdown']}")
     
     
-    current_attempt = msg.original_request.get('attempt', 0)
-    MAX_RETRIES = 30
+    status_data = {
+        "status": "processing",
+        "message": "Food Advisor is checking quality...",
+        "current_score": 0
+    }
+    os.makedirs("recipe_results", exist_ok=True)
+    with open(f"recipe_results/{msg.session}.json", 'w') as f:
+        json.dump(status_data, f, indent=2)
     
-    if total_score >= 84:
-        ctx.logger.info(f" Recipe APPROVED!")
-        
-        # Search for dish image
-        ctx.logger.info(f" Searching for image of '{msg.name}'...")
+    rating_result = Caculate_rating(msg)
+    total_score = rating_result["total"]
+    
+    ctx.logger.info(f"Recipe score: {total_score}/100")
+    
+    if total_score >= 84 or msg.attempt >= 30:
+        # Recipe approved or max attempts reached
         image_url = await search_dish_image(msg.name)
         
-        if msg.session:
-            result_data = {
-                "status": "completed",
-                "data": {
-                    "name": msg.name,
-                    "image_link": image_url,
-                    "step_by_step": msg.steps,
-                    "rating": total_score,
-                    "calories": msg.calories,
-                    "health": msg.health,
-                    "difficulty": msg.difficulty,
-                    "ingredients_used": msg.ingredients_used
-                }
-            }
-            
-            
-            
-            
-            
-            file_path = os.path.join(RESULTS_DIR, f"{msg.session}.json")
-            with open(file_path, 'w') as f:
-                json.dump(result_data, f, indent=2)
-            
-            
-            ctx.logger.info(f" Saved to file: {file_path}")
+        final_result = {
+            "name": msg.name,
+            "image_link": image_url,
+            "step_by_step": msg.steps,
+            "rating": total_score,
+            "calories": msg.calories,
+            "health": msg.health,
+            "difficulty": msg.difficulty,
+            "ingredients_used": msg.ingredients_used,
+            "detected_ingredients": msg.detected_ingredients,
+            "confidence": msg.confidence
+        }
         
-    elif current_attempt >= MAX_RETRIES:
+        # Save final result
+        with open(f"recipe_results/{msg.session}.json", 'w') as f:
+            json.dump(final_result, f, indent=2)
+       
+        ctx.logger.info(f"Stored result for session: {msg.session}")
         
-        ctx.logger.info(f"Max retries ({MAX_RETRIES}) reached. Returning current recipe (Score: {total_score}/100)")
-        
-        
-        ctx.logger.info(f" Searching for image of '{msg.name}'...")
-        image_url = await search_dish_image(msg.name)
-        
-        if msg.session:
-            result_data = {
-                "status": "completed",
-                "data": {
-                    "name": msg.name,
-                    "image_link": image_url,
-                    "step_by_step": msg.steps,
-                    "rating": total_score,
-                    "calories": msg.calories,
-                    "health": msg.health,
-                    "difficulty": msg.difficulty,
-                    "ingredients_used": msg.ingredients_used
-                }
-            }
-            
-          
-            
-           
-            file_path = os.path.join(RESULTS_DIR, f"{msg.session}.json")
-            with open(file_path, 'w') as f:
-                json.dump(result_data, f, indent=2)
-            
-            ctx.logger.info(f"Stored result for session: {msg.session}")
-            ctx.logger.info(f"Saved to file: {file_path}")
-    
     else:
-        ctx.logger.info(f"Recipe needs improvement (Score: {total_score}/100) - Attempt {current_attempt + 1}/{MAX_RETRIES}")
-        feedback = Generate_llm_feedback(rating, msg.original_request)
-        retry = OutputforAdvisor(
+        # Recipe needs improvement - save retry status
+        retry_status = {
+            "status": "retrying",
+            "message": f"Recipe score was {total_score}/100. Improving recipe...",
+            "score": total_score,
+            "retry_count": msg.attempt + 1
+        }
+        with open(f"recipe_results/{msg.session}.json", 'w') as f:
+            json.dump(retry_status, f, indent=2)
+        await asyncio.sleep(3)
+        ctx.logger.info(f"Recipe score too low ({total_score}), requesting retry (attempt {msg.attempt + 1})")
+        
+        # Send back to cooker for improvement
+        feedback = Generate_llm_feedback(rating_result, msg.original_request)
+        
+        retry_msg = OutputByCooker(
+            name=msg.name,
+            ingredients_used=msg.ingredients_used,
+            steps=msg.steps,
+            calories=msg.calories,
+            health=msg.health,
+            difficulty=msg.difficulty,
+            detected_ingredients=msg.detected_ingredients,
             original_request=msg.original_request,
-            feedback=feedback,
-            attempt=current_attempt + 1,
-            session=msg.session  # Pass session through retry
+            confidence=msg.confidence,
+            session=msg.session,
+            attempt=msg.attempt + 1,
+            feedback=feedback
         )
         
-        cooker_address = "agent1qwke9pml8wcysqqj4js4405wt29xqcrmw0xqw8gw7z84n8mwafdykdlyvjq"
-        await ctx.send(cooker_address, retry)
+        await ctx.send(cooker_agent.address, retry_msg)
         ctx.logger.info(" Sent feedback to Cooker for retry")
 
 
