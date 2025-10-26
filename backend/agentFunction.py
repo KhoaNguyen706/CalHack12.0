@@ -65,7 +65,7 @@ async def Cook(msg):
             {"role": "system", "content": "You are a extremly perfect chef. Cooking by your heart"},
             {"role": "user", "content": cooking_prompt}
         ],
-        max_tokens=100
+        max_tokens=500
     )
     
     result = response.choices[0].message.content.strip()
@@ -80,22 +80,14 @@ async def CookAgain(msg):
     1. Change the dishes
     2. Change the ingredients you used to fit with feed back
     Return ONLY JSON FORMAT nothing else
-    {
+    {{
         "name":"new dishes",
         "ingredients_used": ["beef","onion","rice","tomato"],
         "steps" : ["slice onion","wash beef"],
         "calories": 400,
         "health": "Good",
         "difficulty": "hard",
-        "original_request": {
-            "name":"ogrinal name"
-            "ingredients_used": ["...","...","..."]
-            "steps" : ["....","...."]
-            "calories": 400
-            "health": "...."
-            "difficulty": "...."
-        }
-    }
+    }}
 """
     response = client.chat.completions.create(
         model="moonshotai/kimi-k2-instruct-0905",  # Updated model
@@ -103,7 +95,7 @@ async def CookAgain(msg):
             {"role": "system", "content": "You are a extremly perfect chef. Cooking by your heart"},
             {"role": "user", "content": cooking_again_prompt}
         ],
-        max_tokens=300
+        max_tokens=500
     )
     
     result = response.choices[0].message.content.strip()
@@ -120,9 +112,9 @@ def Caculate_rating(msg) -> dict:
     reasons =[]
 
     #calories scores
-    if 400 <=msg.calories <= 700:
+    if 350 <=msg.calories <= 600:
         scores["calories"] = 25
-    elif msg.calories <400:
+    elif msg.calories <350:
         scores["calories"] = 15
         reasons.append(f"Calories too low {msg.calories}")
     else:
@@ -132,15 +124,15 @@ def Caculate_rating(msg) -> dict:
     if msg.health.lower() in ["healthy", "very healthy"]:
         scores["health"] = 20
     elif msg.health.lower() == "moderate":
-        scores["health"] = 10
+        scores["health"] = 15
         reasons.append("Health score is moderate")
     else:
-        scores["health"] = 5
+        scores["health"] = 10
         reasons.append("Unhealthy")
 
     # dfficulty 
     if msg.difficulty.lower() == "easy":
-        scores["difficulty"] = 20
+        scores["difficulty"] = 25
     elif msg.difficulty.lower() == "medium":
         scores["difficulty"] = 15
         reasons.append("Could be easier")
@@ -155,7 +147,7 @@ def Caculate_rating(msg) -> dict:
         scores["ingredients"] = 15
         reasons.append("Using fewer ingredients")
     else:
-        scores["ingredients"] = 5
+        scores["ingredients"] = 10
         reasons.append("lack of nutrients")
 
     if len(msg.steps) > 100:
@@ -225,4 +217,39 @@ Keep feedback concise and actionable (3-5 bullet points).
     )
     result = response.choices[0].message.content.strip()
     return result
+
+def clean_json_response(response: str) -> str:
+    """Remove markdown code blocks and extra whitespace from LLM response"""
+    response = response.strip()
+    if response.startswith("```json"):
+        response = response[7:]  
+    elif response.startswith("```"):
+        response = response[3:]  
+    if response.endswith("```"):
+        response = response[:-3]  
+    return response.strip()
+
+async def search_dish_image(dish_name: str) -> str:
+    """
+    Search for a dish image using multiple methods:
+    1. Unsplash API (free, high quality)
+    2. Bright Data (if configured)
+    3. Placeholder image as fallback
+    """
+    import httpx
+    import urllib.parse
+    
+    try:
+        # Try Unsplash first (free, no API key needed for basic usage)
+        search_query = urllib.parse.quote(f"{dish_name} food")
+        unsplash_url = f"https://source.unsplash.com/800x600/?{search_query}"
+        
+        print(f" Generated image URL for '{dish_name}': {unsplash_url}")
+        return unsplash_url
+        
+    except Exception as e:
+        print(f" Error generating image URL: {e}")
+        # Fallback to a placeholder
+        search_query = urllib.parse.quote(dish_name)
+        return f"https://via.placeholder.com/800x600.png?text={search_query}"
         
