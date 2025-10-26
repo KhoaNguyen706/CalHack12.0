@@ -1,0 +1,42 @@
+{
+  "name": "Fiery 5-Minute Salmon & Veg Power Stack",
+  "image_link": "https://source.unsplash.com/800x600/?Fiery%205-Minute%20Salmon%20%26%20Veg%20Power%20Stack%20food",
+  "step_by_step": [
+    "Heat non-stick pan on high for 30 sec",
+    "Rub salmon with 1 tsp olive oil, minced chili, pinch salt",
+    "Sear salmon 1 min per side; remove",
+    "Add asparagus & broccoli, toss 1 min with chili flakes",
+    "Layer spinach, veg, salmon; sprinkle cheese & crushed peanuts; serve"
+  ],
+  "rating": 95,
+  "calories": 420,
+  "health": "Excellent",
+  "difficulty": "easy",
+  "ingredients_used": [
+    "salmon",
+    "chili peppers",
+    "asparagus",
+    "broccoli",
+    "olive oil",
+    "spinach",
+    "peanuts",
+    "cheese"
+  ],
+  "detected_ingredients": [
+    "asparagus",
+    "avocado",
+    "broccoli",
+    "carrot",
+    "cheese",
+    "chili peppers",
+    "cranberries",
+    "egg",
+    "kiwi",
+    "olive oil",
+    "peanuts",
+    "salmon",
+    "spinach",
+    "sunflower seeds",
+    "tomato"
+  ]
+}

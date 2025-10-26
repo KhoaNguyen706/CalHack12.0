@@ -1,0 +1,38 @@
+{
+  "name": "Lightning Cauliflower-Cheese Omelette Wrap",
+  "image_link": "https://source.unsplash.com/800x600/?Lightning%20Cauliflower-Cheese%20Omelette%20Wrap%20food",
+  "step_by_step": [
+    "grate cauliflower into rice-size",
+    "beat eggs with splash milk",
+    "saut\u00e9 onion & bell pepper 60 sec",
+    "add cauliflower rice 90 sec",
+    "pour beaten eggs, sprinkle cheese, fold 90 sec",
+    "slide into lettuce cup, roll, serve"
+  ],
+  "rating": 85,
+  "calories": 320,
+  "health": "Good",
+  "difficulty": "easy",
+  "ingredients_used": [
+    "egg",
+    "cauliflower",
+    "cheese",
+    "onion",
+    "red bell pepper",
+    "lettuce"
+  ],
+  "detected_ingredients": [
+    "cauliflower",
+    "cheese",
+    "cucumber",
+    "egg",
+    "lettuce",
+    "milk",
+    "onion",
+    "orange",
+    "radishes",
+    "red bell pepper",
+    "red cabbage",
+    "yellow bell pepper"
+  ]
+}
