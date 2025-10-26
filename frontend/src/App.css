@@ -1,90 +1,42 @@
-.App {
-  text-align: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.App-header {
-  background-color: #282c34;
-  padding: 20px;
-  color: white;
-}
-
-.App-main {
-  padding: 20px;
-  max-width: 800px;
+#root {
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
-.voice-control {
-  margin: 20px 0;
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-.mic-button {
-  padding: 15px 30px;
-  font-size: 18px;
-  border-radius: 25px;
-  border: none;
-  cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
-  transition: all 0.3s ease;
-}
-
-.mic-button:hover {
-  background-color: #45a049;
-}
-
-.mic-button.listening {
-  background-color: #f44336;
-  animation: pulse 1.5s infinite;
-}
-
-.mic-button.listening:hover {
-  background-color: #da190b;
-}
-
-.recipe-display {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-top: 20px;
-  text-align: left;
-}
-
-.recipe-summary {
-  color: #666;
-  margin: 15px 0;
-}
-
-.recipe-ingredients ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.recipe-ingredients li {
-  padding: 5px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.recipe-steps ol {
-  padding-left: 20px;
-}
-
-.recipe-steps li {
-  margin: 10px 0;
-  line-height: 1.6;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
   }
-  50% {
-    transform: scale(1.05);
+  to {
+    transform: rotate(360deg);
   }
-  100% {
-    transform: scale(1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
   }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
 }
