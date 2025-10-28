@@ -393,7 +393,7 @@ async def evaluate_recipe(ctx:Context,sender: str, msg: OutputByCooker):
             "detected_ingredients": msg.detected_ingredients
         }
 
-    if total_score >= 84 or attempt >= max_attempt:
+    if total_score >= 80 or attempt >= max_attempt:
         # Final result: best scoring recipe
         with open(result_path, 'w') as f:
             json.dump(best_result, f, indent=2)

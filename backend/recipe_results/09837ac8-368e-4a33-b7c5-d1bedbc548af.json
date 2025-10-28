@@ -1,0 +1,45 @@
+{
+  "name": "Vietnamese Spicy Salmon & Veg Spring Rolls",
+  "image_link": "https://source.unsplash.com/800x600/?Vietnamese%20Spicy%20Salmon%20%26%20Veg%20Spring%20Rolls%20food",
+  "step_by_step": [
+    "Julienne carrot & asparagus, slice tomato into thin wedges",
+    "Rub salmon with minced chili, salt, pepper; sear in hot olive oil 2 min/side until just cooked, flake",
+    "Whisk egg with pinch salt, make 2 thin omelettes; cool then slice into ribbons",
+    "Quick-pickle carrot & asparagus in 1:1 rice-vinegar & warm water + sugar + chili for 5 min",
+    "Dip rice paper in warm water 3 s, lay flat; layer spinach, salmon, omelette ribbons, tomato, carrot/asparagus pickle, crushed peanuts",
+    "Roll tight, tuck ends; repeat",
+    "Blitz 2 tbsp peanuts + 1 chili + 1 tsp olive oil + tomato pulp for dipping sauce"
+  ],
+  "rating": 85,
+  "calories": 480,
+  "health": "Excellent",
+  "difficulty": "medium",
+  "ingredients_used": [
+    "salmon",
+    "chili peppers",
+    "spinach",
+    "carrot",
+    "asparagus",
+    "tomato",
+    "peanuts",
+    "olive oil",
+    "egg"
+  ],
+  "detected_ingredients": [
+    "asparagus",
+    "avocado",
+    "broccoli",
+    "carrot",
+    "cheese",
+    "chili peppers",
+    "cranberries",
+    "egg",
+    "kiwi",
+    "olive oil",
+    "peanuts",
+    "salmon",
+    "spinach",
+    "sunflower seeds",
+    "tomato"
+  ]
+}

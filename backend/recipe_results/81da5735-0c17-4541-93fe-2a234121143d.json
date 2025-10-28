@@ -1,0 +1,6 @@
+{
+  "status": "error",
+  "stage": "detect",
+  "step": "detect",
+  "message": "Failed to start action agent: All connection attempts failed"
+}

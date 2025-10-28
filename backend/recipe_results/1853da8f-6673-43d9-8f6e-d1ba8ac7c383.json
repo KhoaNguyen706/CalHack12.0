@@ -1,0 +1,45 @@
+{
+  "name": "Spicy Vietnamese Sausage & Pepper Skillet",
+  "image_link": "https://source.unsplash.com/800x600/?Spicy%20Vietnamese%20Sausage%20%26%20Pepper%20Skillet%20food",
+  "step_by_step": [
+    "Slice sausage on the bias 5 mm thick",
+    "Julienne bell pepper and thin-slice onion",
+    "Heat wok to smoking, 1 tbsp oil",
+    "Sear sausage 2 min until edges caramelize",
+    "Add aromatics: chili, onion, stir 30 s",
+    "Toss in bell pepper, 1 tsp sugar, 1 tbsp fish sauce, splash water",
+    "Cook 3 min until peppers blister but stay crisp",
+    "Push mixture to side, crack egg, fry 90 s runny",
+    "Finish with squeeze of lime, scatter tomato for freshness",
+    "Serve sizzling with crusty baguette or rice"
+  ],
+  "rating": 95,
+  "calories": 520,
+  "health": "Good",
+  "difficulty": "easy",
+  "ingredients_used": [
+    "sausage",
+    "bell pepper",
+    "onion",
+    "tomato",
+    "egg",
+    "hot chilies (inferred for heat)",
+    "fish sauce",
+    "sugar",
+    "lime"
+  ],
+  "detected_ingredients": [
+    "bell pepper",
+    "berries",
+    "broccoli",
+    "carrot",
+    "cheese",
+    "egg",
+    "hot dogs",
+    "onion",
+    "radishes",
+    "sausage",
+    "tomato",
+    "yogurt"
+  ]
+}

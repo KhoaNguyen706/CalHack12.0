@@ -1,0 +1,41 @@
+{
+  "name": "Umami-Soy Glazed Beef & Tomato Rice Bowl",
+  "image_link": "https://source.unsplash.com/800x600/?Umami-Soy%20Glazed%20Beef%20%26%20Tomato%20Rice%20Bowl%20food",
+  "step_by_step": [
+    "Rinse rice until water runs clear; cook with 1:1.2 rice-to-water ratio for fluffy grains.",
+    "Flash-sear beef sirloin (2 min/side) in smoking-hot pan, rest 5 min, then slice thin against grain.",
+    "Caramelize onion over medium-low heat 8 min until golden; add ginger & garlic for 30 s.",
+    "Deglaze with soy, mirin, and tomato juice; reduce to glossy glaze.",
+    "Fold in diced tomato off-heat to keep fresh pop; finish with sesame oil & scallion.",
+    "Layer rice, beef, onion-tomato glaze; garnish with scallion."
+  ],
+  "rating": 80,
+  "calories": 420,
+  "health": "Good",
+  "difficulty": "hard",
+  "ingredients_used": [
+    "beef sirloin",
+    "onion",
+    "jasmine rice",
+    "tomato",
+    "low-sodium soy sauce",
+    "mirin",
+    "ginger",
+    "garlic",
+    "scallion",
+    "toasted sesame oil",
+    "black pepper"
+  ],
+  "detected_ingredients": [
+    "bell pepper",
+    "cauliflower",
+    "cheese",
+    "cucumber",
+    "egg",
+    "lettuce",
+    "milk",
+    "onion",
+    "radish",
+    "red cabbage"
+  ]
+}
