@@ -1,4 +1,4 @@
-# CalHack12.0
+# CalHack12.0 - Hungry Flow
 Link demo : https://www.youtube.com/watch?v=O6Mta3VZrSQ
 
 How to set up:
