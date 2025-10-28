@@ -1,6 +1,0 @@
-{
-  "status": "retrying",
-  "message": "Recipe score was 70/100. Improving recipe...",
-  "score": 70,
-  "retry_count": 1
-}
