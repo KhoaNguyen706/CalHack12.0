@@ -50,3 +50,7 @@ htmlcov/
 # Misc
 *.bak
 .cache/
+
+# Recipe results (runtime output)
+backend/recipe_results/
+backend/recipe_results/*.json
